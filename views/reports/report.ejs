@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Shield System</title>
+
+    <%- include('../partials/css-imports') %>
+
+    <style>
+        .long-word-container {
+            word-wrap: break-word !important;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #contentToPrint, #contentToPrint * {
+                visibility: visible;
+            }
+
+            #contentToPrint {
+                margin: 0;
+                padding: 0;
+            }
+
+            .print-page {
+                page-break-inside: avoid; /* Avoid breaking inside the content */
+            }
+
+            .page-break {
+                page-break-before: always; /* Force a page break after this element */
+            }
+        }
+
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            color: #fff;
+        }
+
+        .py-4{
+            padding-top: 1.5rem !important;
+            padding-bottom: 0 !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+
+</head>
+<body>
+<!-- Loader -->
+<!-- <div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div> -->
+<!-- Loader -->
+
+<div class="page-wrapper toggled">
+    <!-- sidebar-wrapper -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <!-- Top Header -->
+        <!-- Top Header -->
+
+        <div class="container-fluid">
+            <div style="    padding: 94px 14px 24px !important;" class="layout-specing">
+                <div class="d-none d-md-flex justify-content-between align-items-center d-print-none">
+                    <h5 class="mb-0">Case Report</h5>
+
+                    <a id="newModal" href="#" class="d-none btn btn-primary" data-bs-toggle="modal"
+                       data-bs-target="#roomModal">
+                        &#43; Add Conclusion
+                    </a>
+
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col">
+                        <div id="contentToPrint" class="card shadow rounded border-0">
+                            <div class="card-body">
+                                <div class="invoice-top pb-4 border-bottom">
+                                    <div class="row">
+                                        <div class="col-xl-9 col-md-8">
+                                            <div style="position: absolute;" class="logo-invoice mb-2"><img
+                                                        src="/assets/images/logo.png"
+                                                        height="84" alt=""></div>
+
+                                        </div><!--end col-->
+                                        <h6 class="text-center" style="color: red">
+                                            OFFICIAL USE ONLY
+                                        </h6>
+                                        <h1 class="display-6 text-center" style="font-weight: bold;">
+                                            DIGITAL EVIDENCE FORENSIC REPORT
+                                            <hr class="my-4" style="border-bottom: 4px solid;">
+                                        </h1>
+                                    </div><!--end row-->
+                                </div>
+
+                                <div class="text-center invoice-middle py-4">
+                                    <h5>CASE INFORMATION</h5>
+                                    <div class="row mb-0">
+                                        <div class=" col-md-12 ">
+                                            <div class="row">
+                                                <span class="col-1 text-start fw-normal">Case ID</span>
+                                                <span class="col-1 text-start text-muted"># <%= caseItem.id %></span>
+
+                                                <span class="col-2 text-end fw-normal">Offense Type:</span>
+                                                <span class="col text-start text-muted"> <%= caseItem.offenseType %></span>
+
+                                                <span class="col text-end fw-normal">Offense:</span>
+                                                <span class="col text-start text-muted"><%= caseItem.offense %></span>
+                                            </div>
+                                            <div class="row">
+                                                <span class=" col text-start col-md-2  fw-normal">Description:</span>
+                                                <span class="col text-start text-muted"><%= caseItem.description %></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr class="my-4" style="border-bottom: 2px  solid black">
+
+                                </div>
+                                <div class="text-center invoice-middle py-4">
+                                    <h5>OFFICERS INVOLVED</h5>
+                                    <% if (caseItem.CaseOfficers && caseItem.CaseOfficers.length > 0) {
+                                    caseItem.CaseOfficers.forEach(caseOfficer => {
+                                    %>
+                                        <% let fullName = 'N/A'; %>
+                                        <% let phone = 'N/A'; %>
+                                        <% let email = 'N/A'; %>
+
+                                        <% if (caseOfficer.Officer && caseOfficer.Officer.User) { %>
+                                            <% email = caseOfficer.Officer.User.email; %>
+                                            <% phone = caseOfficer.Officer.User.phone; %>
+                                            <% fullName = caseOfficer.Officer.User.firstName + " " + caseOfficer.Officer.User.middleName + " " + caseOfficer.Officer.User.lastName; %>
+                                        <% } %>
+
+                                        <div class="row mb-1 border-top">
+                                            <div class=" col-md-12 ">
+                                                <div class="row p-1">
+                                                    <div class="text-start col-2">
+                                                        <span class="fw-normal">ID:</span>
+                                                        <span class="text-muted">#<%= caseOfficer.Officer.id %></span>
+                                                    </div>
+
+                                                    <div class="col-6">
+                                                        <span class="fw-normal">Full Name:</span>
+                                                        <span class="text-muted"><%= fullName %></span>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <span class="fw-normal">Job Title:</span>
+                                                        <span class="text-muted"><%= caseOfficer.Officer.jobTitle %></span>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="row p-1">
+                                                    <div class="text-start col-3">
+                                                        <span class="fw-normal">Phone:</span>
+                                                        <span class="text-muted"><%= phone %></span>
+
+                                                    </div>
+
+                                                    <div class="text-start col">
+                                                        <span class=" fw-normal">Department Name:</span>
+                                                        <span class="text-muted"><%= caseOfficer.Officer.departmentName %> </span>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <span class="fw-normal">Military Rank:</span>
+                                                        <span class="text-muted"><%= caseOfficer.Officer.militaryRank %></span>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="row p-1">
+
+
+                                                    <div class="text-start col-8">
+                                                        <span class=" fw-normal">Email:</span>
+                                                        <span class="text-muted"><%= email %></span>
+
+                                                    </div>
+
+                                                    <div class="col-4">
+                                                        <span class="fw-normal">Address:</span>
+                                                        <span class="text-muted"><%= caseOfficer.Officer.address %></span>
+                                                    </div>
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    <% });} %>
+
+                                    <hr class="my-4" style="border-bottom: 2px  solid black">
+
+                                </div>
+                                <div class="text-center invoice-middle py-4">
+                                    <h5>CASE RELATED INVOLVED</h5>
+                                    <% if (caseItem.PartyInvolvements && caseItem.PartyInvolvements.length > 0) {
+                                    caseItem.PartyInvolvements.forEach(partyInvolved => {
+                                    %>
+                                        <% let fullName = 'N/A'; %>
+                                        <% let phone = 'N/A'; %>
+                                        <% let email = 'N/A'; %>
+                                        <%
+                                            let selectedType = partyInvolved.type
+                                            let nationalType = partyInvolved.Party.nationalIdType
+                                            selectedType = selectedType == 1 ? 'Examiner' : selectedType == 2 ? 'Investigator' : selectedType == 3 ? 'Witness' : '';
+                                            nationalType = nationalType == 1 ? 'National ID' : nationalType == 2 ? 'IQAMA' : nationalType == 3 ? 'Passport' : '';
+                                        %>
+
+                                        <% fullName = partyInvolved.Party.firstName + " " + partyInvolved.Party.middleName + " " + partyInvolved.Party.lastName; %>
+
+
+
+                                        <div class="row mb-1 border-top">
+                                            <div class=" col-md-12 ">
+                                                <div class="row p-1">
+                                                    <div class="text-start col-2">
+                                                        <span class="fw-normal">ID:</span>
+                                                        <span class="text-muted">#<%= partyInvolved.Party.id %></span>
+                                                    </div>
+
+                                                    <div class="col-6">
+                                                        <span class="fw-normal">Full Name:</span>
+                                                        <span class="text-muted"><%= fullName %></span>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <span class="fw-normal">Address:</span>
+                                                        <span class="text-muted"><%= partyInvolved.Party.address %></span>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="row p-1">
+                                                    <div class="text-start col-3">
+                                                        <span class="fw-normal">National ID</span>
+                                                        <span class="text-muted"><%= partyInvolved.Party.nationalId %></span>
+                                                    </div>
+
+                                                    <div class="text-start col">
+                                                        <span class=" fw-normal">National ID Type</span>
+                                                        <span class="text-muted"><%= nationalType %></span>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <span class="fw-normal">Involvement Type</span>
+                                                        <span class="text-muted"><%= selectedType %></span>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    <% });} %>
+                                    <hr class="my-4" style="border-bottom: 2px  solid black">
+
+                                </div>
+
+
+                                <div class=" invoice-table pb-4">
+                                    <h5 class="text-center">EVIDENCE SUBMITTED:</h5>
+
+                                    <div class="table-responsive bg-white shadow rounded">
+                                        <table class="table mb-0 table-center invoice-tb">
+                                            <thead class="bg-soft-primary">
+                                            <tr>
+                                                <th scope="col" class="border-bottom text-center">#</th>
+                                                <th scope="col" class="border-bottom text-center">ID</th>
+                                                <th scope="col" class="border-bottom text-center">Seizure Date</th>
+                                                <th scope="col" class="border-bottom text-center">Seizure Location</th>
+                                                <th scope="col" class="border-bottom text-center">Description</th>
+                                                <th scope="col" class="col-3 border-bottom text-center">Hash</th>
+                                                <th scope="col" class="border-bottom">Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% let counter = 0;
+                                            if (caseItem.Evidence && caseItem.Evidence.length > 0) {
+                                            caseItem.Evidence.forEach(evidence => {
+                                                counter++;
+                                            %>
+                                            <tr>
+                                                <th scope="row" class="text-start"><%= counter %></th>
+                                                <td class="text-center"><%= evidence.externalId %></td>
+                                                <td class="formatDate  text-center"><%= evidence.seizureDate %></td>
+                                                <td class="text-center"><%= evidence.seizureAddress %></td>
+                                                <td class="text-center"><%= evidence.description %></td>
+                                                <td style="word-wrap: break-word;" class=" split text-center"><%= evidence.hash %></td>
+                                                <td class="text-center"><a href="/<%= evidence.fileUrl %>"
+                                                                           class="video-popup-button video-popup">
+                                                        <i class="ti ti-eye"></i>
+                                                    </a></td>
+                                            </tr>
+                                            <% });} %>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <hr class="my-4" style="border-bottom: 2px  solid black">
+
+                                </div>
+                                <div class="invoice-table pb-4">
+                                    <h5 class="text-center">EVIDENCE DISPOSITION:</h5>
+
+                                    <div class="table-responsive bg-white shadow rounded">
+                                        <table id="myTable" class="table mb-0 table-center invoice-tb">
+                                            <thead class="bg-soft-primary">
+                                            <tr>
+                                                <th scope="col" class="border-bottom text-center">#</th>
+                                                <th scope="col" class="border-bottom text-center">ID</th>
+                                                <th scope="col" class="border-bottom text-center">Date</th>
+                                                <th scope="col" class="border-bottom text-center">Released by</th>
+                                                <th scope="col" class="border-bottom text-center">Received by</th>
+                                                <th scope="col" class=" d-none border-bottom text-center">Comments</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% let counter2 = 0;
+                                            if (caseItem.Evidence && caseItem.Evidence.length > 0) {
+                                            caseItem.Evidence.forEach(evidence => {
+                                                counter2++;
+                                            %>
+                                            <tr>
+                                                <th scope="row" class="text-start"><%= counter2 %></th>
+                                                <td class="text-center"><%= evidence.externalId %></td>
+                                                <td class="formatDate text-center"><%= evidence.seizureDate %></td>
+                                                <td class="text-center"><%= evidence.Officer.User.firstName + " " + evidence.Officer.User.middleName + " " + evidence.Officer.User.lastName %></td>
+                                                <% if (counter2 === 1) {
+                                                %>
+                                                    <td class="text-center receivedBy"
+                                                        rowspan="<%= caseItem.Evidence.length %>" ></td>
+                                                <% } %>
+
+                                                <td class=" d-none  text-center">view</td>
+                                            </tr>
+                                            <% });} %>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <hr class="my-4" style="border-bottom: 2px  solid black">
+
+                                </div>
+
+                                <div class="invoice-table pb-4">
+                                    <h5 class="text-center">FORENSIC EXAMINER’S CONCLUSION:</h5>
+                                    <p class="text-center" id="conclusionText">None </p>
+                                </div>
+                                <div class="invoice-footer border-top pt-4">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="text-sm-start text-muted text-center">
+                                                <h6 class="mb-0">Shield System </h6>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <a href="/reports/<%=caseItem.id%>/print" target="_blank" class="btn btn-icon btn-soft-primary d-print-none"><i
+                                        class="ti ti-printer"></i></a>
+                        </div>
+
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<div class="modal fade" id="roomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Conclusion</h5>
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="reservationForm">
+
+                    <div class="form-group">
+                        <label for="sectionNumber" class="col-form-label">Conclusion</label>
+                        <textarea rows="3" type="text" class="form-control" id="description"
+                                  name="description"></textarea>
+                    </div>
+
+
+                    <br>
+                    <br>
+                    <button type="button" onclick="closeModal()" class="btn btn-secondary" data-dismiss="modal"
+                            id="closeModalButton">Close
+                    </button>
+                    <button type="button" onclick="addConclusion()" class="btn btn-primary"
+                            id="reserveButton">Save
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading-overlay">
+    <span class="spinner-border spinner-border-lg loading-spinner" role="status" aria-hidden="true"></span>
+</div>
+<%
+const caseId = caseItem.id;
+%>
+
+<!-- javascript -->
+<%- include('../partials/js-imports') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+<!-- JAVASCRIPT -->
+
+<script>
+    const userId = localStorage.getItem("userId");
+    let officerId;
+    let officerName = "";
+    const caseId = '<%= caseId %>';
+
+
+    fetch(`/api/officers/user/${userId}`, {
+        method: 'GET',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+
+            officerId = data.data.id;
+            officerName = data.data.User.firstName + " " + data.data.User.middleName + " " + data.data.User.lastName;
+            console.log("Officer data:", data);
+        })
+        .catch(error => {
+            // Handle errors here
+            console.error("Error fetching case:", error);
+        });
+
+    fetch(`/api/reports/conclusions/${caseId}`, {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Conc data:", data);
+            if (data.data === null) {
+                console.log("Data is null");
+                document.getElementById('newModal').classList.remove('d-none');
+            } else {
+                const createdBy = data.data.officerId;
+                if (createdBy == officerId) {
+                    console.log("The Same Officer");
+                    document.getElementById('newModal').classList.remove('d-none');
+                    document.getElementById('newModal').innerHTML = 'Edit Conclusion';
+                }
+
+                document.getElementById('conclusionText').innerHTML = data.data.content;
+                var elements = document.getElementsByClassName('receivedBy');
+                console.log(data.data.Officer.User.firstName);
+                officerName = data.data.Officer.User.firstName + " " + data.data.Officer.User.middleName + " " + data.data.Officer.User.lastName;
+                for (var i = 0; i < elements.length; i++) {
+                    elements[i].innerHTML = officerName;
+                }
+
+
+            }
+        })
+        .catch(error => {
+            // Handle errors here
+            console.error("Error fetching case:", error);
+        });
+
+    splitHash();
+    function changeVideo(videoPath) {
+        var videoPlayer = document.getElementById("videoPlayer");
+        var videoSource = document.getElementById("videoSource");
+
+        // Update video source
+        videoSource.src = videoPath;
+
+        // Reload the video player to apply the changes
+        videoPlayer.load();
+
+        // Show the video player
+        videoPlayer.style.display = "block";
+
+        // Autoplay the video (optional)
+        videoPlayer.play();
+    }
+
+    function formatVideoUrl(url) {
+        // Assuming "/evidences/uploads" is part of the URL
+        return url.replace('/evidences', '');
+    }
+
+
+    function closeModal() {
+        $('#roomModal').modal('hide');
+        const reserveBtn = document.getElementById('saveButton');
+        reserveBtn.disabled = false;
+        reserveBtn.innerHTML = 'حجز';
+
+    }
+
+    function showModal() {
+        $("#roomModal").modal("show");
+    }
+
+    function addConclusion() {
+        document.getElementById('loading-overlay').style.display = 'flex';
+        const content = document.getElementById('description').value;
+
+        const formData = new FormData(document.getElementById('reservationForm'));
+
+        // Additional data can be appended to the FormData if needed
+        formData.append('officerId', officerId);
+
+
+        fetch(`/api/reports/${caseId}/${officerId}/${content}`, {
+            method: 'POST',
+            body: formData,
+        }).then(response => response.json())
+            .then(data => {
+                // Handle the response data as needed
+                console.log(data);
+                document.getElementById('loading-overlay').style.display = 'none';
+                if (data.status === 201) {
+                    localStorage.setItem('hasNotification', "true");
+                    localStorage.setItem('notification', "Conclusion Added Successfully");
+                    localStorage.setItem('notificationType', "success");
+                    window.location.href = '/cases/all'; // Adjust the URL accordingly
+                } else if (data.status > 399) {
+                    toastr.error(data.message);
+                }
+            }).catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+            document.getElementById('loading-overlay').style.display = 'none';
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+    });
+
+    function removeCell() {
+        var table = document.getElementById('myTable');
+        var receivedByColumnIndex = 3; // Assuming the "Received by" column is the fifth column (index 4)
+
+        // Get all rows in the table
+        var rows = table.getElementsByTagName('tr');
+
+        var secondRow = rows[1];
+        var cellValue = secondRow.cells[4].innerText; // Adjust the index based on your column position
+
+
+        // Iterate through rows (start from the second row, as the first row is the header)
+        for (var i = 1; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName('td');
+
+            // Remove all cells in the "Received by" column except for the first one
+            for (var j = cells.length - 1; j >= 0; j--) {
+                if (j == receivedByColumnIndex) {
+                    cells[j].innerHTML = ''; // Make the cell empty
+                }
+            }
+
+        }
+
+    }
+
+    $(document).ready(function () {
+        $('.video-popup').magnificPopup({
+            type: 'iframe', // 'iframe' for videos
+            iframe: {
+                patterns: {
+                    youtube: {
+                        index: 'youtube.com/',
+                        id: 'v=',
+                        src: 'https://www.youtube.com/embed/%id%?autoplay=1'
+                    },
+                    vimeo: {
+                        index: 'vimeo.com/',
+                        id: '/',
+                        src: 'https://player.vimeo.com/video/%id%?autoplay=1'
+                    }
+                }
+            }
+        });
+    });
+
+</script>
+
+</body>
+
+</html>

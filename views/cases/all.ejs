@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Shield System</title>
+
+    <%- include('../partials/css-imports') %>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
+
+    <style>
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<!-- Loader -->
+<!-- <div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div> -->
+<!-- Loader -->
+
+<div class="page-wrapper toggled">
+    <!-- sidebar-wrapper -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <!-- Top Header -->
+        <%- include('../partials/header') %>
+        <!-- Top Header -->
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <%- include('../partials/page-title',{title:'Cases'}) %>
+
+                <div class="row">
+
+                    <div class="col-xl-12 mt-4">
+                        <div class="card border-0">
+                            <div class="table-responsive shadow rounded" data-simplebar style="height: 545px;">
+                                <table id="dataTable" class="table table-center bg-white mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-bottom p-3">#</th>
+                                        <th class="text-center border-bottom p-3">Offense</th>
+                                        <th class="text-center border-bottom p-3">Offense Type</th>
+                                        <th class="text-center border-bottom p-3">Description</th>
+                                        <th class="text-center border-bottom p-3">Party</th>
+                                        <th class="text-center border-bottom p-3">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- Start -->
+
+                                    <% let counter = 0;
+                                    if (response.data && response.data.length > 0) { %>
+                                        <% response.data.forEach(cases => {
+                                            counter++;
+                                        %>
+                                        <tr>
+                                            <th class="p-3"><%- counter %></th>
+                                            <td class="text-center p-3"><%- cases.offense %></td>
+                                            <td class="text-center p-3"><span
+                                                        class="badge rounded-pill bg-soft-primary">
+                                                    <%- cases.offenseType %>
+                                                </span></td>
+                                            <td class="text-center p-3"><%- cases.description %></td>
+                                            <!-- Assuming cases.PartyInvolvements is an array -->
+
+                                            <td class="text-center p-3">
+                                                <% cases.PartyInvolvements.forEach((partyInvolvement, index) => { %>
+                                                    <%= partyInvolvement.Party.firstName + " " + partyInvolvement.Party.lastName %>
+                                                    <span class="badge rounded-pill <%= (partyInvolvement.type === 1) ? 'bg-info' : (partyInvolvement.type === 2) ? 'bg-danger' : (partyInvolvement.type === 3) ? 'bg-secondary' : 'bg-secondary' %>">
+  <%= (partyInvolvement.type === 1) ? 'Victim' : (partyInvolvement.type === 2) ? 'Suspect' : (partyInvolvement.type === 3) ? 'Witness' : 'Unknown Type' %>
+</span>
+
+                                                    <% if (index < cases.PartyInvolvements.length - 1) { %> <% } %>
+                                                    </br>
+                                                    <%
+
+                                                }); %>
+                                            </td>
+
+                                            <td class="text-center p-3">
+                                                <div id="button-cont" class="button-container">
+                                                    <a onclick="deleteIt(<%= cases.id %>)" class="delete-button">
+                                                        <i class="ti ti-trash"></i>
+                                                    </a>
+
+
+                                                    <a class="edit-button" href="/cases/edit/<%= cases.id %>">
+                                                        <i class="mdi mdi-pencil-circle-outline"></i>
+                                                    </a>
+                                                    <a href="/reports/<%= cases.id %>"
+                                                       class="video-popup-button video-popup">
+                                                        <i class="ti ti-eye"></i>
+                                                    </a>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+
+                                        <% }); %>
+                                    <% } else { %>
+                                        <!-- Handle case when there are no partys -->
+                                        <tr>
+                                            <td colspan="9" class="text-center">No parties found</td>
+                                        </tr>
+                                    <% } %>
+
+                                    <!-- End -->
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div>
+
+        <!-- Footer Start -->
+        <%- include('../partials/footer') %>
+
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- javascript -->
+<%- include('../partials/js-imports') %>
+
+<!-- JAVASCRIPT -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    function deleteIt(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this case!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/api/cases/${id}`, {
+                    method: 'Delete',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data as needed
+                        console.log(data);
+                        document.getElementById('loading-overlay').style.display = 'none';
+                        toastr.success("Deleted Successfully");
+                        location.reload();
+
+                    })
+                    .catch(error => {
+                        // Handle errors
+                        console.error('Error:', error);
+                        document.getElementById('loading-overlay').style.display = 'none';
+                    });
+            }
+        });
+    }
+
+    // Add this script in your HTML or include it in your server-side code
+    function getInvolvementTypeLabel(type) {
+        if (type === 1) {
+            return 'Victim';
+        } else if (type === 2) {
+            return 'Suspect';
+        } else if (type === 3) {
+            return 'Witness';
+        } else {
+            return 'Unknown Type';
+        }
+    }
+
+</script>
+
+</body>
+
+</html>

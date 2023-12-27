@@ -1,0 +1,228 @@
+{
+  "offenseTypes": [
+    {
+      "id": 1,
+      "type": "Crimes Against a Person"
+    },
+    {
+      "id": 2,
+      "type": "Crimes Against Property"
+    },
+    {
+      "id": 3,
+      "type": "Crimes Against Morality"
+    },
+    {
+      "id": 4,
+      "type": "Statutory Crimes"
+    },
+    {
+      "id": 5,
+      "type": "Financial/White Collar Crimes"
+    },
+    {
+      "id": 6,
+      "type": "Inchoate Crimes"
+    }
+  ],
+  "offenses": {
+    "Crimes Against a Person": [
+      {
+        "id": 1,
+        "title": "Assault and battery"
+      },
+      {
+        "id": 2,
+        "title": "Robbery"
+      },
+      {
+        "id": 3,
+        "title": "Child abuse"
+      },
+      {
+        "id": 4,
+        "title": "Kidnapping"
+      },
+      {
+        "id": 5,
+        "title": "Sexual assault"
+      },
+      {
+        "id": 6,
+        "title": "Manslaughter"
+      },
+      {
+        "id": 7,
+        "title": "Murder"
+      }
+    ],
+    "Crimes Against Property": [
+      {
+        "id": 8,
+        "title": "Shoplifting"
+      },
+      {
+        "id": 9,
+        "title": "Theft (larceny)"
+      },
+      {
+        "id": 10,
+        "title": "Grand theft"
+      },
+      {
+        "id": 11,
+        "title": "Auto theft"
+      },
+      {
+        "id": 12,
+        "title": "Arson"
+      },
+      {
+        "id": 13,
+        "title": "Destruction of property"
+      }
+    ],
+    "Crimes Against Morality": [
+      {
+        "id": 14,
+        "title": "Prostitution"
+      },
+      {
+        "id": 15,
+        "title": "Bigamy"
+      },
+      {
+        "id": 16,
+        "title": "Illegal gambling"
+      },
+      {
+        "id": 17,
+        "title": "Illegal drug use"
+      },
+      {
+        "id": 18,
+        "title": "Indecent exposure"
+      }
+    ],
+    "Statutory Crimes": [
+      {
+        "id": 19,
+        "title": "Driving under the influence (DUI)"
+      },
+      {
+        "id": 20,
+        "title": "Boating under the influence (BUI)"
+      },
+      {
+        "id": 21,
+        "title": "Drug possession, sale, or distribution"
+      },
+      {
+        "id": 22,
+        "title": "Drug cultivation or manufacturing"
+      },
+      {
+        "id": 23,
+        "title": "Public intoxication"
+      },
+      {
+        "id": 24,
+        "title": "Selling alcohol to a minor"
+      },
+      {
+        "id": 25,
+        "title": "Refusing a breath/blood test"
+      },
+      {
+        "id": 26,
+        "title": "Driving without a license"
+      },
+      {
+        "id": 27,
+        "title": "Reckless driving"
+      },
+      {
+        "id": 28,
+        "title": "Hit and run"
+      }
+    ],
+    "Financial/White Collar Crimes": [
+      {
+        "id": 29,
+        "title": "Embezzlement"
+      },
+      {
+        "id": 30,
+        "title": "Forgery"
+      },
+      {
+        "id": 31,
+        "title": "Insider trading"
+      },
+      {
+        "id": 32,
+        "title": "Securities fraud"
+      },
+      {
+        "id": 33,
+        "title": "Investment fraud"
+      },
+      {
+        "id": 34,
+        "title": "Tax evasion"
+      },
+      {
+        "id": 35,
+        "title": "Mortgage fraud"
+      },
+      {
+        "id": 36,
+        "title": "Identity theft"
+      },
+      {
+        "id": 37,
+        "title": "Money laundering"
+      },
+      {
+        "id": 38,
+        "title": "Public corruption"
+      },
+      {
+        "id": 39,
+        "title": "Corporate fraud"
+      },
+      {
+        "id": 40,
+        "title": "Bank fraud"
+      },
+      {
+        "id": 41,
+        "title": "Election law violations"
+      },
+      {
+        "id": 42,
+        "title": "Healthcare fraud"
+      }
+    ],
+    "Inchoate Crimes": [
+      {
+        "id": 43,
+        "title": "Aiding and abetting"
+      },
+      {
+        "id": 44,
+        "title": "Conspiracy"
+      },
+      {
+        "id": 45,
+        "title": "Attempt"
+      },
+      {
+        "id": 46,
+        "title": "Solicitation"
+      }
+    ]
+  }
+}
+
+

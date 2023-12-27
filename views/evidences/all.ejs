@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Shield System</title>
+
+    <%- include('../partials/css-imports') %>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+
+    <style>
+
+
+    </style>
+
+</head>
+<body>
+<!-- Loader -->
+
+<!-- Loader -->
+
+<div class="page-wrapper toggled">
+    <!-- sidebar-wrapper -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <!-- Top Header -->
+        <%- include('../partials/header') %>
+        <!-- Top Header -->
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <%- include('../partials/page-title',{title:'Evidences'}) %>
+
+                <div class="row">
+
+                    <div class="col-xl-12 mt-4">
+                        <div class="card border-0">
+                            <div class="table-responsive shadow rounded" data-simplebar style="height: 545px;">
+                                <table id="dataTable" class="table table-center bg-white mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-bottom p-3">#</th>
+                                        <th class="text-center border-bottom p-3">Case</th>
+                                        <th class="text-center border-bottom p-3">Description</th>
+                                        <th class="text-center border-bottom p-3">Video Duration</th>
+                                        <th class="text-center border-bottom p-3">File Size</th>
+                                        <th class="text-center border-bottom p-3">Notes</th>
+                                        <th class="text-center border-bottom p-3">Seizure Date</th>
+                                        <th class="text-center border-bottom p-3">Seizure Address</th>
+                                        <th class="text-center border-bottom p-3">Officer</th>
+                                        <th class="text-end border-bottom p-3">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- Start -->
+
+                                    <% let counter = 0;
+                                    if (response.data && response.data.length > 0) { %>
+                                        <% response.data.forEach(evidence => {
+                                            counter++;
+                                        %>
+                                        <tr>
+                                            <th class="p-3"><%- counter %></th>
+                                            <td class="text-center p-3">
+                                                #<%- evidence.Case.id %> <%- evidence.Case.offense %></td>
+                                            <td class="text-center p-3"><%- evidence.description %></td>
+                                            <td class="text-center p-3"><%- evidence.dimensions %></td>
+                                            <td class="text-center p-3"><%- evidence.fileSize + " MB" %></td>
+                                            <td class="text-center p-3"><%- evidence.notes %></td>
+                                            <td  class="formatDate text-center p-3"><%= evidence.seizureDate %></td>
+                                            <td class="text-center p-3"><%- evidence.seizureAddress %></td>
+                                            <td class="text-center p-3"><%- "#" + evidence.Officer.id + " " + evidence.Officer.User.firstName + " " + evidence.Officer.User.lastName %></td>
+
+                                            <td class="text-center p-3">
+                                                <div id="button-cont" class="button-container">
+
+                                                    <a href="/<%= evidence.fileUrl %>"
+                                                       class="video-popup-button video-popup">
+                                                        <i class="ti ti-eye"></i>
+                                                    </a>
+
+                                                    <a class="edit-button" href="/evidences/edit/<%= evidence.id %>">
+                                                        <i class="mdi mdi-pencil-circle-outline"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                        <% }); %>
+                                    <% } else { %>
+                                        <!-- Handle case when there are no partys -->
+                                        <tr>
+                                            <td colspan="9" class="text-center">No parties found</td>
+                                        </tr>
+                                    <% } %>
+
+                                    <!-- End -->
+                                    <!-- End -->
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+            <video id="videoPlayer" width="640" height="360" controls style="display: none;">
+                <source id="videoSource" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <!-- Footer Start -->
+        <%- include('../partials/footer') %>
+
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+<script>
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const options = {
+            month: 'short',
+            day: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        };
+        return date.toLocaleString('en-US', options);
+    }
+
+    function changeVideo(videoPath) {
+        var videoPlayer = document.getElementById("videoPlayer");
+        var videoSource = document.getElementById("videoSource");
+
+        // Update video source
+        videoSource.src = videoPath;
+
+        // Reload the video player to apply the changes
+        videoPlayer.load();
+
+        // Show the video player
+        videoPlayer.style.display = "block";
+
+        // Autoplay the video (optional)
+        videoPlayer.play();
+    }
+
+    function formatVideoUrl(url) {
+        // Assuming "/evidences/uploads" is part of the URL
+        return url.replace('/evidences', '');
+    }
+</script>
+
+<!-- javascript -->
+<%- include('../partials/js-imports') %>
+
+<!-- JAVASCRIPT -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+<script>
+    function deleteIt(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this user!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/api/evidences/${id}`, {
+                    method: 'Delete',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data as needed
+                        console.log(data);
+                        document.getElementById('loading-overlay').style.display = 'none';
+                        toastr.success("Deleted Successfully");
+                        location.reload();
+
+                    })
+                    .catch(error => {
+                        // Handle errors
+                        console.error('Error:', error);
+                        document.getElementById('loading-overlay').style.display = 'none';
+                    });
+            }
+        });
+    }
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.video-popup').magnificPopup({
+            type: 'iframe', // 'iframe' for videos
+            iframe: {
+                patterns: {
+                    youtube: {
+                        index: 'youtube.com/',
+                        id: 'v=',
+                        src: 'https://www.youtube.com/embed/%id%?autoplay=1'
+                    },
+                    vimeo: {
+                        index: 'vimeo.com/',
+                        id: '/',
+                        src: 'https://player.vimeo.com/video/%id%?autoplay=1'
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+
+</html>

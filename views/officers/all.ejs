@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Shield System</title>
+
+    <%- include('../partials/css-imports') %>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.min.css">
+
+    <style>
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<!-- Loader -->
+<!-- <div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div> -->
+<!-- Loader -->
+
+<div class="page-wrapper toggled">
+    <!-- sidebar-wrapper -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <!-- Top Header -->
+        <%- include('../partials/header') %>
+        <!-- Top Header -->
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <%- include('../partials/page-title',{title:'Officers'}) %>
+
+                <div class="row">
+
+                    <div class="col-xl-12 mt-4">
+                        <div class="card border-0">
+                            <div class="table-responsive shadow rounded" data-simplebar style="height: 545px;">
+                                <table id="dataTable" class="table table-center bg-white mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-bottom p-3">#</th>
+                                        <th class="text-center border-bottom p-3">Name</th>
+                                        <th class="text-center border-bottom p-3">Job Title</th>
+                                        <th class="text-center border-bottom p-3">Military Rank</th>
+                                        <th class="text-center border-bottom p-3">Department</th>
+                                        <th class="text-center border-bottom p-3">Email</th>
+                                        <th class="text-center border-bottom p-3">Phone</th>
+                                        <th class="text-center border-bottom p-3">Type</th>
+                                        <th class="text-center border-bottom p-3">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- Start -->
+
+                                    <% let counter = 0;
+                                    if (response.data && response.data.length > 0) { %>
+                                        <% response.data.forEach(officer => {
+                                            counter++;
+                                        %>
+                                        <tr>
+                                            <th class="p-3"><%- counter %></th>
+                                            <td style="    max-width: 16rem; text-align: center;" class="p-3">
+                                                <a href="#"
+                                                   class="text-primary features feature-primary key-feature">
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="ms-2"><%- officer.User.firstName + " " + officer.User.lastName %></span>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="text-center p-3"><%- officer.jobTitle %></td>
+                                            <td class="text-center p-3"><%- officer.militaryRank %></td>
+                                            <td class="text-center p-3"><%- officer.departmentName %></td>
+                                            <td class="text-center p-3"><%- officer.User.email %></td>
+                                            <td class="text-center p-3"><%- officer.User.phone %></td>
+                                            <td class="text-center p-3"><span
+                                                        class="badge rounded-pill bg-soft-primary">
+                                                    <% if (officer.type === 1) { %>
+                                                        Examiner
+                                                    <% } else if (officer.type === 2) { %>
+                                                        Investigator
+                                                    <% } else { %>
+                                                        Unknown Type
+                                                    <% } %>
+                                                </span></td>
+
+
+                                            <td class="text-center p-3">
+                                                <div id="button-cont" class="button-container">
+                                                    <a onclick="deleteIt(<%= officer.id %>)" class="delete-button">
+                                                        <i class="ti ti-trash"></i>
+                                                    </a>
+
+
+                                                    <a class="edit-button" href="/officers/edit/<%= officer.id %>">
+                                                        <i class="mdi mdi-pencil-circle-outline"></i>
+                                                    </a>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+
+                                        <% }); %>
+                                    <% } else { %>
+                                        <!-- Handle case when there are no officers -->
+                                        <tr>
+                                            <td colspan="9" class="text-center">No officers found</td>
+                                        </tr>
+                                    <% } %>
+
+                                    <!-- End -->
+                                    <!-- End -->
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div>
+
+        <!-- Footer Start -->
+        <%- include('../partials/footer') %>
+
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<!-- javascript -->
+<%- include('../partials/js-imports') %>
+
+<!-- JAVASCRIPT -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11.1.2/dist/sweetalert2.all.min.js"></script>
+
+<script>
+    function deleteIt(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this user!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/api/officers/${id}`, {
+                    method: 'Delete',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle the response data as needed
+                        console.log(data);
+                        document.getElementById('loading-overlay').style.display = 'none';
+                        toastr.success("Deleted Successfully");
+                        location.reload();
+
+                    })
+                    .catch(error => {
+                        // Handle errors
+                        console.error('Error:', error);
+                        document.getElementById('loading-overlay').style.display = 'none';
+                    });
+            }
+        });
+    }
+</script>
+
+</body>
+
+</html>

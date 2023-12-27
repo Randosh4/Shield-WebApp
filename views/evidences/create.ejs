@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Shield System</title>
+
+    <%- include('../partials/css-imports') %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"/>
+
+    <style>
+
+        .select2-container--default .select2-selection--single, .select2-container .select2-selection--single {
+            border: 1px solid #e9ecef;
+            height: 2.5rem !important;
+            font-size: 14px;
+            line-height: 26px;
+            text-align: left;
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-weight: 400;
+            color: #212529 !important;
+            background-color: #ffffff;
+            background-clip: padding-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 0.375rem;
+            -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 2.2rem;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+
+</head>
+<body>
+<!-- Loader -->
+<!-- <div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div> -->
+<!-- Loader -->
+
+<div class="page-wrapper toggled">
+    <!-- sidebar-wrapper -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <!-- Top Header -->
+        <%- include('../partials/header') %>
+        <!-- Top Header -->
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between align-items-center">
+                    <h5 style="color: white; font-weight: bold" class="mb-0">Add Evidence</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item text-capitalize"><a href="/">Shield</a></li>
+                            <li class="breadcrumb-item text-capitalize"><a href="/evidences/all">Evidences</a></li>
+                            <li class="breadcrumb-item text-capitalize active" aria-current="page">Add</li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 mt-4">
+                        <div class="card border-0 rounded shadow">
+                            <div class="card-body">
+
+                                <form id="officerForm" action="/evidences" method="post"
+                                      enctype="multipart/form-data">
+
+                                    <div class="row mt-4">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">File</label>
+                                                <div class="form-icon position-relative">
+                                                    <input name="file" id="first" type="file"
+                                                           class="form-control" accept="video/*"
+                                                           onchange="validateFile()">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Duration</label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                    <input name="dimensions" id="duration" readonly type="text"
+                                                           class="form-control ps-5"
+                                                           placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Description</label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                    <input name="description" id="last" type="text"
+                                                           class="form-control ps-5"
+                                                           placeholder="Description">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Notes</label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                    <input name="notes" id="last" type="text"
+                                                           class="form-control ps-5"
+                                                           placeholder="Notes">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Seizure Date</label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="calendar" class="fea icon-sm icons"></i>
+                                                    <input name="seizureDate" type="date" class="form-control ps-5"
+                                                           pattern="\d{1,2}/\d{1,2}/\d{4}" placeholder="dd/mm/yyyy">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Seizure Time</label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="clock" class="fea icon-sm icons"></i>
+                                                    <input name="seizureTime" type="time" class="form-control ps-5">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Seizure Address</label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                    <input name="seizureAddress" id="last" type="text"
+                                                           class="form-control ps-5"
+                                                           placeholder="Address">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Case <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <select class="form-control country-select" name="caseId"
+                                                            id="evidenceSelect">
+                                                        <option selected disabled value="">Choose option</option>
+                                                        <% cases.forEach(caseItem => { %>
+                                                            <option value="<%= caseItem.id %>"><%= "#" + caseItem.id + " " + caseItem.offense %>
+                                                                (<%= caseItem.description %>)
+                                                            </option>
+                                                        <% }); %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Officers <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <select multiple="multiple" class="form-control country-select"
+                                                            name="officerIds"
+                                                            id="officerSelect">
+                                                        <option disabled value="">Choose option</option>
+                                                        <% officers.forEach(officer => { %>
+                                                            <option value="<%= officer.id %>"><%= "#" + officer.id + " " + officer.User.firstName + " " + officer.User.lastName %></option>
+                                                        <% }); %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Evidence ID</label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                    <input name="evidenceId" id="last" type="number"
+                                                           class="form-control ps-5"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" name="officerId" id="officerId" value=""/>
+                                    </div><!--end row-->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <!-- Use the "position-relative" class for proper styling -->
+                                            <button type="button" id="submit" onclick="confirm(event)" name="send"
+                                                    class="btn btn-primary position-relative">
+                                                Save
+                                                <!-- Bootstrap Spinner component -->
+                                                <span class="spinner-border spinner-border-sm position-absolute top-50 start-50 translate-middle"
+                                                      role="status" aria-hidden="true" style="display: none;"></span>
+                                            </button>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </form><!--end form-->
+                            </div>
+                        </div>
+                        <div id="loading-overlay">
+                            <span class="spinner-border spinner-border-lg loading-spinner" role="status"
+                                  aria-hidden="true"></span>
+                        </div>
+                    </div><!--end col-->
+
+
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <%- include('../partials/footer') %>
+
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+
+<!-- javascript -->
+<%- include('../partials/js-imports') %>
+
+<!-- JAVASCRIPT -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<script>
+    const userId = localStorage.getItem("userId");
+    let officerId;
+
+    fetch(`/api/officers/user/${userId}`, {
+        method: 'GET',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            officerId = data.data.id;
+            document.getElementById("officerId").value = officerId;
+            console.log("Officer data:", data);
+        })
+        .catch(error => {
+            // Handle errors here
+            console.error("Error fetching officer:", error);
+        });
+
+
+    function submitForm(event) {
+        // Get form data
+        const formData = new FormData(document.getElementById('officerForm'));
+        document.getElementById('loading-overlay').style.display = 'flex';
+
+        // Fetch API to submit the form
+        fetch('/api/evidences', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(async response => {
+                document.getElementById('loading-overlay').style.display = 'none';
+
+                if (!response.ok) {
+                    const responseBody = await response.json();
+
+                    console.error('Error:', responseBody.message);
+
+                    if (response.status > 399) {
+                        toastr.error(responseBody.message);
+                    }
+
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                return response.json();
+            })
+            .then(data => {
+                // Handle the successful response
+                console.log('Success:', data);
+                localStorage.setItem('hasNotification', 'true');
+                localStorage.setItem('notification', 'Evidence Created Successfully');
+                localStorage.setItem('notificationType', 'success');
+                window.location.href = '/evidences/all'; // Adjust the URL accordingly
+            })
+            .catch(error => {
+                document.getElementById('loading-overlay').style.display = 'none';
+                console.error('Error:', error);
+            });
+
+    }
+
+    function validateFile() {
+        var fileInput = document.getElementById('first');
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.mp4|\.avi|\.mkv|\.webm|\.flv)$/i; // Add more video file extensions if needed
+
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Please upload a valid video file (MP4, AVI, MKV, WEBM, FLV).');
+            fileInput.value = '';
+            return false;
+        }
+
+
+        var file = fileInput.files[0];
+
+        if (file) {
+            var video = document.createElement('video');
+            video.preload = 'metadata';
+
+            video.onloadedmetadata = function () {
+                window.URL.revokeObjectURL(video.src);
+                var durationInSeconds = video.duration;
+
+                var hours = Math.floor(durationInSeconds / 3600);
+                var minutes = Math.floor((durationInSeconds % 3600) / 60);
+                var seconds = Math.floor(durationInSeconds % 60);
+
+                var formattedDuration = '';
+
+                if (hours > 0) {
+                    formattedDuration += hours + ' hour ';
+                }
+
+                if (minutes > 0 || hours > 0) {
+                    formattedDuration += minutes + ' min ';
+                }
+
+                formattedDuration += seconds.toFixed(2) + ' sec';
+
+                document.getElementById('duration').value = formattedDuration;
+
+                //   alert('Video duration: ' + formattedDuration);
+            };
+
+            video.src = URL.createObjectURL(file);
+        }
+    }
+    function confirm(event) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This evidence will be saved',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                submitForm(event);
+            }
+        });
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        // Initialize Select2 on the officerSelect element
+        // $('#officerSelect').select2();
+    });
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    // Apply Select2 to the party select dropdown
+    $(document).ready(function () {
+        $('#evidenceSelect').select2({
+            placeholder: 'Search for case',
+            allowClear: true,
+            minimumInputLength: 0,
+        });
+        $('#officerSelect').select2({
+            placeholder: 'Search for a officer',
+            allowClear: true,
+            minimumInputLength: 0,
+        });
+    });
+</script>
+</body>
+
+</html>

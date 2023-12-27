@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Shield System</title>
+
+    <%- include('../partials/css-imports') %>
+
+</head>
+<body>
+<!-- Loader -->
+<!-- <div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div> -->
+<!-- Loader -->
+
+<div class="page-wrapper toggled">
+    <!-- sidebar-wrapper -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <!-- Top Header -->
+        <%- include('../partials/header') %>
+        <!-- Top Header -->
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between align-items-center">
+                    <h5 style="color: white; font-weight: bold"\ class="mb-0">Add Officer</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item text-capitalize"><a href="/">Shield</a></li>
+                            <li class="breadcrumb-item text-capitalize"><a href="/officers/all">Officers</a></li>
+                            <li class="breadcrumb-item text-capitalize active" aria-current="page">Update</li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 mt-4">
+                        <div class="card border-0 rounded shadow">
+                            <div class="card-body">
+
+                                <form id="officerForm">
+                                    <div class="row mt-4">
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Military Rank <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <% const oldMilitaryRank = officer.militaryRank; %>
+                                                    <select class="form-control country-select" name="militaryRank">
+                                                        <option disabled value="1" <% if (!oldMilitaryRank) { %>selected
+                                                                <% } %>
+                                                        >Choose option
+                                                        </option>
+                                                        <option value="General"
+                                                                <% if (oldMilitaryRank === "General") { %>selected
+                                                                <% } %>
+                                                        >General
+                                                        </option>
+                                                        <option value="Colonel"
+                                                                <% if (oldMilitaryRank === "Colonel") { %>selected
+                                                                <% } %>
+                                                        >Colonel
+                                                        </option>
+                                                        <option value="Major"
+                                                                <% if (oldMilitaryRank === "Major") { %>selected
+                                                                <% } %>
+                                                        >Major
+                                                        </option>
+                                                        <option value="Captain"
+                                                                <% if (oldMilitaryRank === "Captain") { %>selected
+                                                                <% } %>
+                                                        >Captain
+                                                        </option>
+                                                        <option value="Lieutenant"
+                                                                <% if (oldMilitaryRank === "Lieutenant") { %>selected
+                                                                <% } %>
+                                                        >Lieutenant
+                                                        </option>
+                                                        <option value="Sergeant"
+                                                                <% if (oldMilitaryRank === "Sergeant") { %>selected
+                                                                <% } %>
+                                                        >Sergeant
+                                                        </option>
+                                                        <option value="Private"
+                                                                <% if (oldMilitaryRank === "Private") { %>selected
+                                                                <% } %>
+                                                        >Private
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Officer Role <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+
+                                                    <select class=" form-control country-select"
+                                                            id="jobTypeSelect" name="type">
+                                                        <option selected disabled value="">Choose option</option>
+                                                        <option value="1">Examiner</option>
+                                                        <option value="2">Investigator</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Job Title <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <select class="form-control country-select" name="jobTitle"
+                                                            id="jobTitleSelect">
+                                                        <option selected disabled value="">Choose option</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">First Name <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user" class="fea icon-sm icons"></i>
+                                                    <input name="firstName" id="first" type="text"
+                                                           class="form-control ps-5"
+                                                           value="<%= officer.User.firstName %>">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Middle Name <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user" class="fea icon-sm icons"></i>
+                                                    <input name="middleName" id="first" type="text"
+                                                           class="form-control ps-5"
+                                                           value="<%= officer.User.middleName %>">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Last Name <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                    <input name="lastName" id="last" type="text"
+                                                           class="form-control ps-5"
+                                                           value="<%= officer.User.lastName %>">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Email <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="mail" class="fea icon-sm icons"></i>
+                                                    <input name="email" id="email" type="email"
+                                                           class="form-control ps-5"
+                                                           value="<%= officer.User.email %>">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Phone No. <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="phone" class="fea icon-sm icons"></i>
+                                                    <input name="phone" id="number" type="number"
+                                                           class="form-control ps-5"
+                                                           value="<%= officer.User.phone %>">
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Address <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                    <input name="address" id="last" type="text"
+                                                           class="form-control ps-5"
+                                                           value="<%= officer.address %>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Department <span class="text-danger">*</span></label>
+                                                <%
+                                                const oldDepartment = officer.departmentName;
+                                                %>
+
+                                                <div class="form-icon position-relative">
+                                                    <select class="form-control country-select" name="departmentName">
+                                                        <option disabled value="1" <% if (!oldDepartment) { %>selected
+                                                                <% } %>
+                                                        >Choose option
+                                                        </option>
+
+                                                        <option value="Riyadh Police Department"
+                                                                <% if (oldDepartment === "Riyadh Police Department") { %>selected
+                                                                <% } %>
+                                                        >Riyadh Police Department
+                                                        </option>
+
+                                                        <option value="Jeddah Police Department"
+                                                                <% if (oldDepartment === "Jeddah Police Department") { %>selected
+                                                                <% } %>
+                                                        >Jeddah Police Department
+                                                        </option>
+                                                        <option value="Abha Police Department"
+                                                                <% if (oldDepartment === "Abha Police Department") { %>selected
+                                                                <% } %>
+                                                        >Abha Police Department
+                                                        </option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                        </div><!--end col-->
+
+
+                                    </div><!--end row-->
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <!-- Use the "position-relative" class for proper styling -->
+                                            <button type="submit" id="submit" name="send"
+                                                    class="btn btn-primary position-relative">
+                                                Save
+                                                <!-- Bootstrap Spinner component -->
+                                                <span class="spinner-border spinner-border-sm position-absolute top-50 start-50 translate-middle"
+                                                      role="status" aria-hidden="true" style="display: none;"></span>
+                                            </button>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </form><!--end form-->
+                            </div>
+                        </div>
+                        <div id="loading-overlay">
+                            <span class="spinner-border spinner-border-lg loading-spinner" role="status"
+                                  aria-hidden="true"></span>
+                        </div>
+                    </div><!--end col-->
+
+
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <%- include('../partials/footer') %>
+
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+<%
+const officerId = officer.id;
+const officerType = officer.type;
+const officerJob = officer.jobTitle;
+%>
+
+<!-- javascript -->
+<%- include('../partials/js-imports') %>
+
+<!-- JAVASCRIPT -->
+
+<script>
+    function confirm(event) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This officer will be updated',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                submitForm(event);
+            }
+        });
+    }
+
+    function submitForm(event) {
+        document.getElementById('loading-overlay').style.display = 'flex';
+
+        const formData = new FormData(event.target);
+
+        const officerId = '<%= officerId %>';
+
+        fetch(`/api/officers/${officerId}`, {
+            method: 'PUT',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data as needed
+                console.log(data);
+                document.getElementById('loading-overlay').style.display = 'none';
+                if (data.status === 200) {
+                    localStorage.setItem('hasNotification', "true");
+                    localStorage.setItem('notification', "Officer Updated Successfully");
+                    localStorage.setItem('notificationType', "success");
+                    window.location.href = '/officers/all';
+                } else if (data.status > 399) {
+                    toastr.error(data.message);
+                }
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error:', error);
+                document.getElementById('loading-overlay').style.display = 'none';
+            });
+
+    }
+    document.getElementById('officerForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const phoneInput = document.getElementById('number');
+        const phoneNumber = phoneInput.value;
+        const phoneRegex = /^\d{12}$/; // Adjust the regex pattern based on your requirements
+
+        if (phoneRegex.test(phoneNumber)) {
+        } else {
+            toastr.error("Wrong Phone number");
+            return;
+        }
+        confirm(event);
+
+
+    });
+    const jobTypeSelect = document.getElementById('jobTypeSelect');
+    const jobTitleSelect = document.getElementById('jobTitleSelect');
+    const officerType = '<%= officerType %>';
+    const officerJob = '<%= officerJob %>';
+    var data;
+    fetchData();
+
+    async function fetchData() {
+        const response = await fetch('/uploads/jobs.json');
+        data = await response.json();
+        console.log(data);
+        populateJobTitles(officerType, data, true);
+    }
+
+    jobTypeSelect.addEventListener('change', async () => {
+        const selectedType = jobTypeSelect.value;
+        console.log("Changed");
+        // Use the fetched data to populate job titles
+        populateJobTitles(selectedType, data, false);
+    });
+
+    function populateJobTitles(selectedType, data, isInit) {
+        jobTitleSelect.innerHTML = '<option selected disabled value="">Choose option</option>';
+
+        if (selectedType) {
+            console.log(selectedType);
+            selectedType = selectedType === '1' ? 'Examiner' : 'Investigator';
+
+            const jobs = data.jobs[selectedType];
+            if (jobs) {
+                jobs.forEach(job => {
+
+                    const option = document.createElement('option');
+                    option.value = job.title;
+                    option.textContent = job.title;
+
+                    if (officerJob == job.title) {
+                        option.selected = true; // Set the option as selected
+                    }
+                    jobTitleSelect.appendChild(option);
+                });
+            }
+        }
+        if (isInit) {
+            var selectElementType = document.getElementById('jobTypeSelect');
+            selectedTypeIndex = (selectedType === 'Examiner') ? 1 : (selectedType === 'Investigator') ? 2 : 'default';
+            selectElementType.selectedIndex = selectedTypeIndex ;
+            console.log("Hi", selectedTypeIndex);
+        }
+    }
+
+</script>
+
+</body>
+
+</html>

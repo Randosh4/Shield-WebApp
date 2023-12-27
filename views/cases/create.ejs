@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Shield System</title>
+
+    <%- include('../partials/css-imports') %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"/>
+
+    <style>
+        .select2-container--default .select2-selection--single {
+            border: 1px solid #e9ecef;
+            height: 2.5rem;
+            font-size: 14px;
+            line-height: 26px;
+            text-align: left;
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-weight: 400;
+            color: #212529 !important;
+            background-color: #ffffff;
+            background-clip: padding-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 0.375rem;
+            -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 2.2rem;
+        }
+    </style>
+</head>
+<body>
+<!-- Loader -->
+<!-- <div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div> -->
+<!-- Loader -->
+
+<div class="page-wrapper toggled">
+    <!-- sidebar-wrapper -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <!-- Top Header -->
+        <%- include('../partials/header') %>
+        <!-- Top Header -->
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Add Case</h4>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item text-capitalize"><a href="index.html">Shield</a></li>
+                            <li class="breadcrumb-item text-capitalize"><a href="#">Cases</a></li>
+                            <li class="breadcrumb-item text-capitalize active" aria-current="page">Add</li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 mt-4">
+                        <div class="card border-0 rounded shadow">
+                            <div class="card-body">
+
+                                <form id="officerForm">
+                                    <div class="row mt-4">
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Offense Type <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+
+                                                    <select class=" form-control country-select"
+                                                            id="offenseTypeSelect" name="offenseType">
+                                                        <option selected disabled value="">Choose option</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Offense <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <select class="form-control country-select" name="offense"
+                                                            id="offenseTitleSelect">
+                                                        <option selected disabled value="">Choose option</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Description <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                    <input name="description" id="last" type="text"
+                                                           class="form-control ps-5"
+                                                           placeholder="Description">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-10">
+                                            <label class="form-label">Parties involved in this case</label>
+                                        </div>
+                                        <div class="text-end col-2">
+                                            <i data-feather="user-plus" class="fea icon-sm"
+                                               style="cursor: pointer;"
+
+                                               onclick="addRow()"> </i>
+                                        </div>
+                                        <div class="col-md-12" id="partyItemsContainer">
+
+                                            <div class="row" id="partyItem1">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Party Name <span
+                                                                    class="text-danger">*</span></label>
+                                                        <div class="form-icon position-relative">
+                                                            <select onclick=""
+                                                                    class="form-control country-select partySelect"
+                                                                    name="partyIds[]" id="party-select1">
+                                                                <option selected disabled value="">Choose option
+                                                                </option>
+                                                                <% parties.forEach(party => { %>
+                                                                    <option value="<%= party.id %>"><%= "#" + party.nationalId + " " + party.firstName %> <%= party.lastName %></option>
+                                                                <% }); %>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Involvement Type <span
+                                                                    class="text-danger">*</span></label>
+                                                        <div class="form-icon position-relative">
+                                                            <select class="form-control country-select"
+                                                                    name="involvementTypes[]">
+                                                                <option selected disabled value="1">Choose option
+                                                                </option>
+                                                                <option value="1">Victim</option>
+                                                                <option value="2">Suspect</option>
+                                                                <option value="3">Witness</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <div class="mb-3">
+                                                        <i data-feather="trash-2" class="fea icon-sm"
+                                                           style="cursor: pointer;     margin-top: 2.4rem;
+    position: relative;"
+                                                           onclick="deleteRow(this)"> </i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12  mb-2">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#newblogadd"><i data-feather="user-plus"
+                                                                                    class="fea icon-sm"> </i>
+                                                New Party
+                                            </button>
+                                        </div>
+
+
+                                    </div><!--end row-->
+                                    <div class="row">
+                                        <div class=" text-end col-sm-12">
+                                            <!-- Use the "position-relative" class for proper styling -->
+                                            <button type="submit" id="submit" name="send"
+                                                    class="btn btn-primary position-relative">
+                                                Save
+                                                <!-- Bootstrap Spinner component -->
+                                                <span class="spinner-border spinner-border-sm position-absolute top-50 start-50 translate-middle"
+                                                      role="status" aria-hidden="true" style="display: none;"></span>
+                                            </button>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </form><!--end form-->
+                            </div>
+                        </div>
+                        <div id="loading-overlay">
+                            <span class="spinner-border spinner-border-lg loading-spinner" role="status"
+                                  aria-hidden="true"></span>
+                        </div>
+                    </div><!--end col-->
+
+
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <%- include('../partials/footer') %>
+
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+<div class="modal fade" id="newblogadd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom p-3">
+                <h5 class="modal-title" id="exampleModalLabel">New Company</h5>
+                <button type="button" class="btn btn-icon btn-close" data-bs-dismiss="modal" id="close-modal"><i
+                            class="uil uil-times fs-4 text-dark"></i></button>
+            </div>
+
+            <div class="modal-body p-3 pt-4">
+                <div class="row">
+
+                    <div class="col-md-12 mt-4 mt-sm-0">
+                        <div class="ms-md-4">
+                            <form id="partyForm">
+                                <div class="row mt-4">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">First Name <span
+                                                        class="text-danger">*</span></label>
+                                            <div class="form-icon position-relative">
+                                                <i data-feather="user" class="fea icon-sm icons"></i>
+                                                <input name="firstName" id="first" type="text"
+                                                       class="form-control ps-5"
+                                                       placeholder="First Name ">
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Middle Name <span
+                                                        class="text-danger">*</span></label>
+                                            <div class="form-icon position-relative">
+                                                <i data-feather="user" class="fea icon-sm icons"></i>
+                                                <input name="middleName" id="first" type="text"
+                                                       class="form-control ps-5"
+                                                       placeholder="Middle Name">
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label class="form-label">Last Name <span
+                                                        class="text-danger">*</span></label>
+                                            <div class="form-icon position-relative">
+                                                <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                <input name="lastName" id="last" type="text"
+                                                       class="form-control ps-5"
+                                                       placeholder="Last Name ">
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label class="form-label">Address <span
+                                                        class="text-danger">*</span></label>
+                                            <div class="form-icon position-relative">
+                                                <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                <input name="address" id="last" type="text"
+                                                       class="form-control ps-5"
+                                                       placeholder="Address">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">ID Number <span
+                                                        class="text-danger">*</span></label>
+                                            <div class="form-icon position-relative">
+                                                <i data-feather="phone" class="fea icon-sm icons"></i>
+                                                <input name="nationalId" id="number" type="number"
+                                                       class="form-control ps-5"
+                                                       placeholder="Phone ">
+                                            </div>
+                                        </div>
+                                    </div><!--end col-->
+
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">ID Type <span
+                                                        class="text-danger">*</span></label>
+                                            <div class="form-icon position-relative">
+
+                                                <select class=" form-control country-select"
+                                                        name="nationalIdType">
+                                                    <option selected disabled value="1">Choose option</option>
+                                                    <option value="1">National ID</option>
+                                                    <option value="2">IQAMA</option>
+                                                    <option value="3">Passport</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div><!--end row-->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- Use the "position-relative" class for proper styling -->
+                                        <button type="submit" id="submit" name="send"
+                                                class="btn btn-primary position-relative">
+                                            Save
+                                            <!-- Bootstrap Spinner component -->
+                                            <span class="spinner-border spinner-border-sm position-absolute top-50 start-50 translate-middle"
+                                                  role="status" aria-hidden="true" style="display: none;"></span>
+                                        </button>
+                                    </div><!--end col-->
+                                </div><!--end row-->
+                            </form><!--end form-->
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- javascript -->
+<%- include('../partials/js-imports') %>
+
+<!-- JAVASCRIPT -->
+
+<script>
+    const userId = localStorage.getItem("userId");
+    let officerId;
+
+    fetch(`/api/officers/user/${userId}`, {
+        method: 'GET',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            officerId = data.data.id;
+            console.log("Officer data:", data);
+        })
+        .catch(error => {
+            // Handle errors here
+            console.error("Error fetching officer:", error);
+        });
+
+    function confirm(event) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This case will be saved',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                submitForm(event);
+            }
+        });
+    }
+
+    function submitForm(event) {
+        document.getElementById('loading-overlay').style.display = 'flex';
+
+        const formData = new FormData(event.target);
+        formData.append('officerId', officerId);
+
+        fetch('/api/cases', {
+            method: 'POST',
+            body: formData,
+        }).then(response => response.json())
+            .then(data => {
+                // Handle the response data as needed
+                console.log(data);
+                document.getElementById('loading-overlay').style.display = 'none';
+                if (data.status === 201) {
+                    localStorage.setItem('hasNotification', "true");
+                    localStorage.setItem('notification', "Case Created Successfully");
+                    localStorage.setItem('notificationType', "success");
+                    window.location.href = '/cases/all'; // Adjust the URL accordingly
+                } else if (data.status > 399) {
+                    toastr.error(data.message);
+                }
+            }).catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+            document.getElementById('loading-overlay').style.display = 'none';
+        });
+    }
+
+    document.getElementById('officerForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        confirm(event);
+
+    });
+
+
+    let itemCount = 1; // Counter for tracking the number of items
+
+    function addSelectSearch() {
+
+    }
+
+    var clonedPartyItem = document.getElementById("partyItem1").cloneNode(true);
+
+
+    function addRow() {
+        console.log("Clicked");
+        // Clone the div containing the "Media" dropdown and "Link" input
+        var partyItem = clonedPartyItem.cloneNode(true);
+
+        // Increment the id for the cloned div
+        itemCount++;
+        partyItem.id = `partyItem${itemCount}`;
+
+        // Clear input fields in the cloned div
+        const selects = partyItem.querySelectorAll('.partySelect');
+        selects.forEach((select, index) => {
+            const currentId = select.id;
+            // Replace the numeric part of the ID
+            select.id = currentId.replace(/\d+$/, itemCount);
+        });
+        selects[0].selectedIndex = 0;
+
+
+        // Append the cloned div to the document
+        const partyItemsContainer = document.getElementById("partyItemsContainer");
+        partyItemsContainer.appendChild(partyItem);
+        selectSearch();
+
+    }
+
+    function deleteRow(icon) {
+        // Get the parent element of the icon (i.e., the div containing the icon)
+        const iconParent = icon.parentElement;
+
+        // Get the grandparent element of the icon (i.e., the partyItem div)
+        const partyItem = iconParent.parentElement.parentElement;
+
+        // Remove the entire partyItem element
+        partyItem.remove();
+    }
+
+
+    const offenseTypeSelect = document.getElementById('offenseTypeSelect');
+    const offenseTitleSelect = document.getElementById('offenseTitleSelect');
+
+    // Fetch JSON data from the file
+    fetch('/uploads/offenses.json') // Replace with the correct path to your offenses JSON file
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // Use the fetched data to populate offense types
+            populateOffenseTypes(data);
+        });
+
+    function populateOffenseTypes(data) {
+        offenseTypeSelect.innerHTML = '<option selected disabled value="">Choose offense type</option>';
+
+        data.offenseTypes.forEach(offenseType => {
+            const option = document.createElement('option');
+            option.value = offenseType.type;
+            option.textContent = offenseType.type;
+            offenseTypeSelect.appendChild(option);
+        });
+
+        // Add an event listener to the offenseTypeSelect dropdown
+        offenseTypeSelect.addEventListener('change', () => {
+            const selectedType = offenseTypeSelect.value;
+            console.log("Changed");
+            // Use the selected offense type to populate offense titles
+            populateOffenseTitles(selectedType, data);
+        });
+    }
+
+    function populateOffenseTitles(selectedType, data) {
+        offenseTitleSelect.innerHTML = '<option selected disabled value="">Choose option</option>';
+
+        if (selectedType) {
+            const offenses = data.offenses[selectedType];
+            if (offenses) {
+                offenses.forEach(offense => {
+                    const option = document.createElement('option');
+                    option.value = offense.title;
+                    option.textContent = offense.title;
+                    offenseTitleSelect.appendChild(option);
+                });
+            }
+        }
+    }
+
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    // Apply Select2 to the party select dropdown
+    $(document).ready(function () {
+        addRow();
+    });
+
+    document.getElementById('partyForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        document.getElementById('loading-overlay').style.display = 'flex';
+
+        const formData = new FormData(event.target);
+
+        fetch('/api/parties', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data as needed
+                console.log(data);
+                document.getElementById('loading-overlay').style.display = 'none';
+                if (data.status === 201) {
+                    toastr.success("Party Created Successfully");
+                    getParties();
+                    document.getElementById('close-modal').click();
+                } else if (data.status > 399) {
+                    toastr.error(data.message);
+                }
+            }).catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+            document.getElementById('loading-overlay').style.display = 'none';
+        });
+    });
+
+    function callSelect(event) {
+        var clickedElement = event.target;
+        console.log('Clicked Element:', clickedElement);
+
+        $(clickedElement).select2({
+            placeholder: 'Search for a party',
+            allowClear: true,
+            minimumInputLength: 0,
+        });
+        // Your other logic here
+    }
+
+    function selectSearch() {
+        $('#partySelect1').select2({
+            placeholder: 'Search for a party',
+            allowClear: true,
+            minimumInputLength: 0,
+        });
+        $('.partySelect').select2({
+            placeholder: 'Search for a party',
+            allowClear: true,
+            minimumInputLength: 0,
+        });
+
+    }
+
+    function getParties() {
+        fetch('/api/parties', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.data);
+                // Get all elements with the class 'partySelect'
+                var selectElements = document.querySelectorAll('.partySelect');
+
+                // Loop through each select element
+                selectElements.forEach((selectElement, index) => {
+                    // Store the current selected value
+                    var currentValue = selectElement.value;
+
+                    // Remove all options except the selected one
+                    Array.from(selectElement.options).forEach(option => {
+                        if (option.value !== currentValue) {
+                            option.remove();
+                        }
+                    });
+
+                    // Add new options based on the fetched data
+                    data.data.forEach(party => {
+                        if (!selectElement.querySelector('option[value="' + party.id + '"]')) {
+                            var option = document.createElement('option');
+                            option.value = party.id;
+                            option.textContent = "#" + party.nationalId + " " + party.firstName + " " + party.lastName;
+                            selectElement.appendChild(option);
+                        }
+                    });
+                });
+
+            }).catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+//            document.getElementById('loading-overlay').style.display = 'none';
+        });
+    }
+</script>
+</body>
+
+</html>

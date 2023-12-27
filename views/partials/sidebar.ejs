@@ -1,0 +1,115 @@
+<nav id="sidebar" class="sidebar-wrapper">
+    <div class="sidebar-content" data-simplebar style="height: calc(100% - 60px);">
+        <div style="height: 6.2rem" class="sidebar-brand">
+            <a style="display:flex;" href="index.html">
+                <img src="/assets/images/logo.png" height="60" class="logo-light-mode" alt="">
+                <img src="/assets/images/logo.png" height="60" class="logo-dark-mode" alt="">
+                <span class="sidebar-colored">
+                                <img src="/assets/images/logo.png" height="60" alt="">
+                            </span>
+                <p style="text-align: center;
+    margin-top: 1rem;" class="text-muted text-capitalize">Hi Luna, Admin</p>
+            </a>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="sidebar-dropdown" id="dashboard">
+                <a href="javascript:void(0)"><i class="ti ti-home me-2"></i>Dashboard</a>
+            </li>
+            <li class="sidebar-dropdown" id="officers">
+                <a href="javascript:void(0)"><i class="ti ti-browser me-2"></i>Officers</a>
+                <div class="sidebar-submenu" id="officers-submenu">
+                    <ul>
+                        <li id="add-officer"><a href="/officers/create">Add</a></li>
+                        <li id="view-officers"><a href="/officers/all">View All</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="sidebar-dropdown" id="parties">
+                <a href="javascript:void(0)"><i class="ti ti-browser me-2"></i>Parties</a>
+                <div class="sidebar-submenu" id="parties-submenu">
+                    <ul>
+                        <li id="add-party"><a href="/parties/create">New</a></li>
+                        <li id="view-parties"><a href="/parties/all">View All</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="sidebar-dropdown" id="cases">
+                <a href="javascript:void(0)"><i class="ti ti-browser me-2"></i>Cases</a>
+                <div class="sidebar-submenu" id="cases-submenu">
+                    <ul>
+                        <li id="new-case"><a href="/cases/create">New</a></li>
+                        <li id="view-cases"><a href="/cases/all">View All</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="sidebar-dropdown" id="evidence">
+                <a href="javascript:void(0)"><i class="ti ti-browser me-2"></i>Evidence</a>
+                <div class="sidebar-submenu" id="evidence-submenu">
+                    <ul>
+                        <li id="new-evidence"><a href="/evidences/create">New</a></li>
+                        <li id="view-evidences"><a href="/evidences/all">View All</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+
+        <!-- sidebar-menu  -->
+    </div>
+
+</nav>
+
+<script>    document.addEventListener('DOMContentLoaded', function () {
+        // Get the user type (replace this with your actual logic)
+        let userType = localStorage.getItem("type");
+
+        // Function to show or hide elements based on user type
+        function showHideElements() {
+            // Hide all elements by default
+            const allElements = document.querySelectorAll('.sidebar-dropdown');
+            allElements.forEach(element => {
+                element.style.display = 'none';
+            });
+
+            if (userType == 1) {
+                document.getElementById('cases').style.display = 'block';
+                document.getElementById('new-case').style.display = 'block';
+                document.getElementById('view-cases').style.display = 'block';
+
+                document.getElementById('evidence').style.display = 'block';
+                document.getElementById('new-evidence').style.display = 'block';
+                document.getElementById('view-evidences').style.display = 'block';
+
+                document.getElementById('parties').style.display = 'block';
+                document.getElementById('add-party').style.display = 'block';
+                document.getElementById('view-parties').style.display = 'block';
+
+            } else if (userType == 2) {
+                document.getElementById('cases').style.display = 'block';
+                document.getElementById('new-case').style.display = 'block';
+                document.getElementById('view-cases').style.display = 'block';
+
+                document.getElementById('evidence').style.display = 'block';
+                document.getElementById('view-evidences').style.display = 'block';
+
+                document.getElementById('parties').style.display = 'block';
+                document.getElementById('add-party').style.display = 'block';
+                document.getElementById('view-parties').style.display = 'block';
+            } else {
+                showAll();
+            }
+
+        }
+
+        showHideElements();
+
+        function showAll() {
+            // Show all elements
+            const allElements = document.querySelectorAll('.sidebar-dropdown, .sidebar-submenu li');
+            allElements.forEach(element => {
+                element.style.display = 'block';
+            });
+        }
+    });
+</script>
+

@@ -1,0 +1,55 @@
+<% if (caseItem.CaseOfficers && caseItem.CaseOfficers.length > 0) {
+caseItem.CaseOfficers.forEach(caseOfficer => {
+%>
+
+    <div class="c x5 yd w9 ha">
+        <div class="t m0 x6 h6 ye ff4 fs3 fc2 sc0 ls0 ws0">Full Name: <span class="fc3 sc0"> </span><span
+                    class="fc3 sc0"> </span><span class="ff1"><span class="fc3 sc0"> </span></span></div>
+    </div>
+    <div class="c xb yd wa ha">
+        <div class="t m0 x6 hb ye ff4 fs3 fc2 sc0 ls0 ws0"><%- caseOfficer.Officer.User.firstName + " " + caseOfficer.Officer.User.lastName %></div>
+    </div>
+    <div class="c xc yd wb ha">
+        <div class="t m0 x6 hb ye ff4 fs3 fc2 sc0 ls0 ws0">Officer ID:</div>
+    </div>
+    <div class="c xd yd wc ha">
+        <div class="t m0 x6 hb ye ff4 fs3 fc2 sc0 ls0 ws0"></div>
+    </div>
+    <div class="c xe yd wd ha">
+        <div class="t m0 x6 hb ye ff4 fs3 fc2 sc0 ls0 ws0">Job Title:</div>
+    </div>
+    <div class="c xf yd we ha">
+        <div class="t m0 x6 hb ye ff4 fs3 fc2 sc0 ls0 ws0"></div>
+    </div>
+    <div class="c x5 yf wf hc">
+        <div class="t m0 x6 hb y10 ff4 fs3 fc2 sc0 ls0 ws0">Phone:</div>
+    </div>
+    <div class="c x10 yf w10 hc">
+        <div class="t m0 x6 hb y10 ff4 fs3 fc2 sc0 ls0 ws0"></div>
+    </div>
+    <div class="c x11 yf w11 hc">
+        <div class="t m0 x6 hb y10 ff4 fs3 fc2 sc0 ls0 ws0">Department Name<span class="_ _2"></span>:</div>
+    </div>
+    <div class="c x12 yf w12 hc">
+        <div class="t m0 x6 hb y10 ff4 fs3 fc2 sc0 ls0 ws0"></div>
+    </div>
+    <div class="c x13 yf w13 hc">
+        <div class="t m0 x6 hb y10 ff4 fs3 fc2 sc0 ls0 ws0">Military Rank:<span class="_ _2"></span></div>
+    </div>
+    <div class="c x14 yf w14 hc">
+        <div class="t m0 x6 hb y10 ff4 fs3 fc2 sc0 ls0 ws0"></div>
+    </div>
+    <div class="c x5 y11 wf hd">
+        <div class="t m0 x6 hb ye ff4 fs3 fc2 sc0 ls0 ws0">Email:</div>
+    </div>
+    <div class="c x10 y11 w15 hd">
+        <div class="t m0 x6 hb ye ff4 fs3 fc2 sc0 ls0 ws0"></div>
+    </div>
+    <div class="c x15 y11 w16 hd">
+        <div class="t m0 x6 hb ye ff4 fs3 fc2 sc0 ls0 ws0">Address:</div>
+    </div>
+    <div class="c x16 y11 w17 hd">
+        <div class="t m0 x6 hb ye ff4 fs3 fc2 sc0 ls0 ws0"></div>
+    </div>
+
+<% });} %>

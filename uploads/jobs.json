@@ -1,0 +1,106 @@
+{
+  "jobTypes": [
+    {
+      "id": 1,
+      "type": "Examiner"
+    },
+    {
+      "id": 2,
+      "type": "Investigator"
+    }
+  ],
+  "jobs": {
+    "Examiner": [
+      {
+        "id": 1,
+        "title": "Computer Forensics Technician"
+      },
+      {
+        "id": 2,
+        "title": "Forensic computer examiner"
+      },
+      {
+        "id": 3,
+        "title": "Digital Forensic Analyst"
+      },
+      {
+        "id": 4,
+        "title": "Malware analyst"
+      },
+      {
+        "id": 5,
+        "title": "Data Scientist"
+      },
+      {
+        "id": 6,
+        "title": "Media Examiner"
+      },
+      {
+        "id": 7,
+        "title": "Forensic computer examiner"
+      },
+      {
+        "id": 8,
+        "title": "Digital Forensics Specialist"
+      },
+      {
+        "id": 9,
+        "title": "Cryptographer"
+      },
+      {
+        "id": 10,
+        "title": "Forensic scientist"
+      },
+      {
+        "id": 11,
+        "title": "Cyber Forensic Analyst"
+      }
+    ],
+    "Investigator": [
+      {
+        "id": 12,
+        "title": "Computer Forensics Investigator"
+      },
+      {
+        "id": 13,
+        "title": "Information technology auditor"
+      },
+      {
+        "id": 14,
+        "title": "Digital crime specialist"
+      },
+      {
+        "id": 15,
+        "title": "Computer Hacking Forensic"
+      },
+      {
+        "id": 16,
+        "title": "Digital Forensics Engineer"
+      },
+      {
+        "id": 17,
+        "title": "Crime scene investigator"
+      },
+      {
+        "id": 18,
+        "title": "Law enforcement officer"
+      },
+      {
+        "id": 19,
+        "title": "Computer forensics director"
+      },
+      {
+        "id": 20,
+        "title": "Digital Forensics Government"
+      },
+      {
+        "id": 21,
+        "title": "Digital Forensic Administrator"
+      },
+      {
+        "id": 22,
+        "title": "Incident Response Consultant"
+      }
+    ]
+  }
+}

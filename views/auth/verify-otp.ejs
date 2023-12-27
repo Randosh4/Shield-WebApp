@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/OTP-style.css">
+    <title>Verify</title>
+    <script src="/assets/js/OTP-script.js" defer></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-auth-compat.js"></script>
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
+
+</head>
+
+
+<!--Hello-->
+
+<!--Hello from online-->
+
+<!--Hello from push-->
+<body>
+<center>
+    <div class="otp-card">
+        <div class="login-card-logo">
+            <img src="/assets/images/logo.png" alt="logo">
+        </div>
+
+        <h1>OTP Verification</h1>
+        <p id="lastPhone">Code has been send to ****1234</p>
+        <br>
+
+        <div id="check"></div>
+
+        <div id="otp" class="otp-card-inputs">
+            <input type="text" id="first" maxlength="1" autofocus>
+            <input type="text" id="second" maxlength="1">
+            <input type="text" id="third" maxlength="1">
+            <input type="text" id="fourth" maxlength="1">
+            <input type="text" id="fifth" maxlength="1">
+            <input type="text" id="sixth" maxlength="1">
+        </div>
+        <br>
+        <p>Didn't get the OTP <a href="#">Resend</a></p>
+        <button id="btnVerify">Verify</button>
+    </div>
+</center>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+
+<script type="text/javascript">
+
+    /**
+     * Set up UI event listeners and registering Firebase auth listeners.
+     */
+    window.onload = function () {
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBMssblAEnuuljWsGkE3_goB1k_WbrrnZE",
+            authDomain: "shield-49120.firebaseapp.com",
+            projectId: "shield-49120",
+            storageBucket: "shield-49120.appspot.com",
+            messagingSenderId: "279178869758",
+            appId: "1:279178869758:web:ceb8199ab10a19cb741eaf"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Listening for auth state changes.
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                var uid = user.uid;
+                var email = user.email;
+                var photoURL = user.photoURL;
+                var phoneNumber = user.phoneNumber;
+                var isAnonymous = user.isAnonymous;
+                var displayName = user.displayName;
+                var providerData = user.providerData;
+                var emailVerified = user.emailVerified;
+            }
+        });
+
+        document.getElementById('btnVerify').addEventListener('click', onVerifyCodeSubmit);
+
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('check', {
+            'size': 'invisible',
+            'callback': function (response) {
+                // reCAPTCHA solved, allow signInWithPhoneNumber.
+                //   onSignInSubmit();
+            }
+        });
+        recaptchaVerifier.render().then(function (widgetId) {
+            window.recaptchaWidgetId = widgetId;
+        });
+        onSignInSubmit();
+    };
+
+    /**
+     * Function called when clicking the Login/Logout button.
+     */
+    function onSignInSubmit() {
+        if (isPhoneNumberValid()) {
+            window.signingIn = true;
+            // updateSignInButtonUI();
+            var phoneNumber = getPhoneNumberFromUserInput();
+            console.log("Phone", phoneNumber);
+            var appVerifier = window.recaptchaVerifier;
+            firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+                .then(function (confirmationResult) {
+                    // SMS sent. Prompt user to type the code from the message, then sign the
+                    // user in with confirmationResult.confirm(code).
+                    window.confirmationResult = confirmationResult;
+                    window.signingIn = false;
+                }).catch(function (error) {
+                // Error; SMS not sent
+                console.error('Error during signInWithPhoneNumber', error);
+                window.alert('Error during signInWithPhoneNumber:\n\n'
+                    + error.code + '\n\n' + error.message);
+                window.signingIn = false;
+            });
+        }
+    }
+
+
+    /**
+     * Function called when clicking the "Verify Code" button.
+     */
+    function onVerifyCodeSubmit(e) {
+        console.log(" sucess");
+
+        e.preventDefault();
+        if (!!getCodeFromUserInput()) {
+            window.verifyingCode = true;
+            var code = getCodeFromUserInput();
+            confirmationResult.confirm(code).then(function (result) {
+                // User signed in successfully.
+                var user = result.user;
+                window.verifyingCode = false;
+                window.confirmationResult = null;
+                console.log("Done sucess");
+                const status = localStorage.getItem("status");
+                if (status == 0) {
+                    window.location.href = '/auth/change-password';
+                } else {
+                    window.location.href = '/';
+                }
+            }).catch(function (error) {
+
+
+                // User couldn't sign in (bad verification code?)
+                console.error('Error while checking the verification code', error);
+                window.alert('Error while checking the verification code:\n\n'
+                    + error.code + '\n\n' + error.message);
+                window.verifyingCode = false;
+
+            });
+        }
+    }
+
+    /**
+     * Cancels the verification code input.
+     */
+    function cancelVerification(e) {
+        e.preventDefault();
+        window.confirmationResult = null;
+
+    }
+
+    /**
+     * Signs out the user when the sign-out button is clicked.
+     */
+    function onSignOutClick() {
+        firebase.auth().signOut();
+    }
+
+    /**
+     * Reads the verification code from the user input.
+     */
+    function getCodeFromUserInput() {
+        var input1 = document.getElementById('first').value;
+        var input2 = document.getElementById('second').value;
+        var input3 = document.getElementById('third').value;
+        var input4 = document.getElementById('fourth').value;
+        var input5 = document.getElementById('fifth').value;
+        var input6 = document.getElementById('sixth').value;
+        var code = input1 + input2 + input3 + input4 + input5 + input6;
+        console.log("Your code is: " + code);
+        return code;
+    }
+
+    /**
+     * Reads the phone number from the user input.
+     */
+    function getPhoneNumberFromUserInput() {
+        const phone = localStorage.getItem('phone');
+        const last4Digits = phone.slice(-4);
+        const paragraph = document.getElementById("lastPhone");
+        paragraph.textContent = "Code has been sent to ****" + last4Digits;
+        return "+"+phone;
+    }
+
+    /**
+     * Returns true if the phone number is valid.
+     */
+    function isPhoneNumberValid() {
+        var pattern = /^\+[0-9\s\-\(\)]+$/;
+        var phoneNumber = getPhoneNumberFromUserInput();
+        return phoneNumber.search(pattern) !== -1;
+    }
+
+    /**
+     * Re-initializes the ReCaptacha widget.
+     */
+    function resetReCaptcha() {
+        if (typeof grecaptcha !== 'undefined'
+            && typeof window.recaptchaWidgetId !== 'undefined') {
+            grecaptcha.reset(window.recaptchaWidgetId);
+        }
+    }
+
+    /**
+     * Updates the Sign-in button state depending on ReCAptcha and form values state.
+     */
+
+    /**
+     * Updates the Verify-code button state depending on form values state.
+     */
+
+    /**
+     * Updates the state of the Sign-in form.
+     */
+
+    /**
+     * Updates the state of the Verify code form.
+     */
+</script>
+</body>
+
+</html>

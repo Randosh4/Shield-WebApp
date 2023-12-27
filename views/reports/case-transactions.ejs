@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Shield System</title>
+
+    <%- include('../partials/css-imports') %>
+
+    <style>
+        .long-word-container {
+            word-wrap: break-word !important;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #contentToPrint, #contentToPrint * {
+                visibility: visible;
+            }
+
+            #contentToPrint {
+                margin: 0;
+                padding: 0;
+            }
+
+            .print-page {
+                page-break-inside: avoid; /* Avoid breaking inside the content */
+            }
+
+            .page-break {
+                page-break-before: always; /* Force a page break after this element */
+            }
+        }
+
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            color: #fff;
+        }
+
+        .py-4{
+            padding-top: 1.5rem !important;
+            padding-bottom: 0 !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+
+</head>
+<body>
+<!-- Loader -->
+<!-- <div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div> -->
+<!-- Loader -->
+
+<div class="page-wrapper toggled">
+    <!-- sidebar-wrapper -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <!-- Top Header -->
+        <!-- Top Header -->
+
+        <div class="container-fluid">
+            <div style="    padding: 94px 14px 24px !important;" class="layout-specing">
+                <div class="d-none d-md-flex justify-content-between align-items-center d-print-none">
+                    <h5 class="mb-0">Case Transactions</h5>
+
+                    <a id="newModal" href="#" class="d-none btn btn-primary" data-bs-toggle="modal"
+                       data-bs-target="#roomModal">
+                        &#43; Add Conclusion
+                    </a>
+
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col">
+                        <div id="contentToPrint" class="card shadow rounded border-0">
+                            <div class="card-body">
+                                <div class="invoice-top pb-4 border-bottom">
+                                    <div class="row">
+                                        <div class="col-xl-9 col-md-8">
+                                            <div style="position: absolute;" class="logo-invoice mb-2"><img
+                                                        src="/assets/images/logo.png"
+                                                        height="84" alt=""></div>
+
+                                        </div><!--end col-->
+                                        <h6 class="text-center" style="color: red">
+                                            OFFICIAL USE ONLY
+                                        </h6>
+                                        <h1 class="display-6 text-center" style="font-weight: bold;">
+                                            DIGITAL EVIDENCE FORENSIC Transactions REPORT
+                                            <hr class="my-4" style="border-bottom: 4px solid;">
+                                        </h1>
+                                    </div><!--end row-->
+                                </div>
+
+                                <div class="text-center invoice-middle py-4">
+                                    <h5>CASE INFORMATION</h5>
+                                    <div class="row mb-0">
+                                        <div class=" col-md-12 ">
+                                            <div class="row">
+                                                <span class="col-1 text-start fw-normal">Case ID</span>
+                                                <span class="col-1 text-start text-muted"># <%= caseItem.id %></span>
+
+                                                <span class="col-2 text-end fw-normal">Offense Type:</span>
+                                                <span class="col text-start text-muted"> <%= caseItem.offenseType %></span>
+
+                                                <span class="col text-end fw-normal">Offense:</span>
+                                                <span class="col text-start text-muted"><%= caseItem.offense %></span>
+                                            </div>
+                                            <div class="row">
+                                                <span class=" col text-start col-md-2  fw-normal">Description:</span>
+                                                <span class="col text-start text-muted"><%= caseItem.description %></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr class="my-4" style="border-bottom: 2px  solid black">
+
+                                </div>
+                    
+                                <div class=" invoice-table pb-4">
+                                    <h5 class="text-center">Case Blockchain Information </h5>
+
+                                    <div class="table-responsive bg-white shadow rounded">
+                                        <table class="table mb-0 table-center invoice-tb">
+                                            <thead class="bg-soft-primary">
+                                            <tr>
+                                                <th scope="col" class="border-bottom text-center">#</th>
+                                                <th scope="col" class="border-bottom text-center">Transaction</th>
+                                                <th scope="col" class="col-3 border-bottom text-center">Hash</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% let counter2 = 0;
+                                            if (caseTransactions ) {
+                                                caseTransactions.forEach(transaction => {
+                                                    counter2++;
+                                                console.log("Tran",transaction);
+                                            %>
+                                            <tr>
+                                                <th scope="row" class="text-start"><%= counter2 %></th>
+                                                <td class=" split text-center"><%= transaction.TxId %></td>
+                                                <td style="word-wrap: break-word;"
+                                                    class=" split text-center"><%= transaction.Value.hash %></td>
+
+                                            </tr>
+                                            <% });} %>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <hr class="my-4" style="border-bottom: 2px  solid black">
+
+                                </div>
+                          
+
+                                <div class=" invoice-table pb-4">
+                                    <h5 class="text-center">EVIDENCES </h5>
+
+                                    <div class="table-responsive bg-white shadow rounded">
+                                        <table class="table mb-0 table-center invoice-tb">
+                                            <thead class="bg-soft-primary">
+                                            <tr>
+                                                <th scope="col" class="border-bottom text-center">#</th>
+                                                <th scope="col" class="border-bottom text-center">ID</th>
+                                                <th scope="col" class="col-3 border-bottom text-center">Hash</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% let counter = 0;
+                                            if (evidenceHashes ) {
+                                                evidenceHashes.forEach(evidence => {
+                                                counter++;
+                                                console.log(evidenceHashes);
+                                            %>
+                                            <tr>
+                                                <th scope="row" class="text-start"><%= counter %></th>
+                                                <td class="text-center"><%= evidence.ID %></td>
+                                                <td style="word-wrap: break-word;"
+                                                    class="  text-center"><%= evidence.hash %></td>
+
+                                            </tr>
+                                            <% });} %>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <hr class="my-4" style="border-bottom: 2px  solid black">
+
+                                </div>
+                          
+
+                                <div class="invoice-footer border-top pt-4">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="text-sm-start text-muted text-center">
+                                                <h6 class="mb-0">Shield System </h6>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <a href="/reports/<%=caseItem.id%>/print" target="_blank" class="btn btn-icon btn-soft-primary d-print-none"><i
+                                        class="ti ti-printer"></i></a>
+                        </div>
+
+                    </div><!--end col-->
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+
+
+
+<div id="loading-overlay">
+    <span class="spinner-border spinner-border-lg loading-spinner" role="status" aria-hidden="true"></span>
+</div>
+<%
+const caseId = caseItem.id;
+%>
+
+<!-- javascript -->
+<%- include('../partials/js-imports') %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+<!-- JAVASCRIPT -->
+
+<script>
+    const userId = localStorage.getItem("userId");
+    let officerId;
+    let officerName = "";
+    const caseId = '<%= caseId %>';
+
+
+    fetch(`/api/officers/user/${userId}`, {
+        method: 'GET',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+
+            officerId = data.data.id;
+            officerName = data.data.User.firstName + " " + data.data.User.middleName + " " + data.data.User.lastName;
+            console.log("Officer data:", data);
+        })
+        .catch(error => {
+            // Handle errors here
+            console.error("Error fetching case:", error);
+        });
+
+   
+    splitHash();
+   
+</script>
+
+</body>
+
+</html>

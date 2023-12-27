@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Shield System</title>
+
+    <%- include('../partials/css-imports') %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"/>
+
+    <style>
+        .select2-container--default .select2-selection--single {
+            border: 1px solid #e9ecef;
+            height: 2.5rem;
+            font-size: 14px;
+            line-height: 26px;
+            text-align: left;
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-weight: 400;
+            color: #212529 !important;
+            background-color: #ffffff;
+            background-clip: padding-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border-radius: 0.375rem;
+            -webkit-transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 2.2rem;
+        }
+    </style>
+</head>
+<body>
+<!-- Loader -->
+<!-- <div id="preloader">
+    <div id="status">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div> -->
+<!-- Loader -->
+
+<div class="page-wrapper toggled">
+    <!-- sidebar-wrapper -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- sidebar-wrapper  -->
+
+    <!-- Start Page Content -->
+    <main class="page-content bg-light">
+        <!-- Top Header -->
+        <%- include('../partials/header') %>
+        <!-- Top Header -->
+
+        <div class="container-fluid">
+            <div class="layout-specing">
+                <div class="d-md-flex justify-content-between align-items-center">
+                    <h5 style="color: white; font-weight: bold" class="mb-0">Edit Case</h5>
+
+                    <nav aria-label="breadcrumb" class="d-inline-block mt-2 mt-sm-0">
+                        <ul class="breadcrumb bg-transparent rounded mb-0 p-0">
+                            <li class="breadcrumb-item text-capitalize"><a href="index.html">Shield</a></li>
+                            <li class="breadcrumb-item text-capitalize"><a href="#">Users</a></li>
+                            <li class="breadcrumb-item text-capitalize active" aria-current="page">Add</li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 mt-4">
+                        <div class="card border-0 rounded shadow">
+                            <div class="card-body">
+
+                                <form id="caseForm">
+                                    <div class="row mt-4">
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Offense Type <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+
+                                                    <select class=" form-control country-select"
+                                                            id="offenseTypeSelect" name="offenseType">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Offense <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <select class="form-control country-select" name="offense"
+                                                            id="offenseTitleSelect">
+                                                        <option selected disabled value="">Choose option</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Description <span
+                                                            class="text-danger">*</span></label>
+                                                <div class="form-icon position-relative">
+                                                    <i data-feather="user-check" class="fea icon-sm icons"></i>
+                                                    <input name="description" id="last" type="text"
+                                                           class="form-control ps-5"
+                                                           value="<%= caseItem.description %>">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div><!--end row-->
+                                    <div class="row">
+                                        <div class=" text-end col-sm-12">
+                                            <!-- Use the "position-relative" class for proper styling -->
+                                            <button type="submit" id="submit" name="send"
+                                                    class="btn btn-primary position-relative">
+                                                Save
+                                                <!-- Bootstrap Spinner component -->
+                                                <span class="spinner-border spinner-border-sm position-absolute top-50 start-50 translate-middle"
+                                                      role="status" aria-hidden="true" style="display: none;"></span>
+                                            </button>
+                                        </div><!--end col-->
+                                    </div><!--end row-->
+                                </form><!--end form-->
+
+
+                            </div>
+                        </div>
+                        <div id="loading-overlay">
+                            <span class="spinner-border spinner-border-lg loading-spinner" role="status"
+                                  aria-hidden="true"></span>
+                        </div>
+                    </div><!--end col-->
+
+
+                </div><!--end row-->
+            </div>
+        </div><!--end container-->
+
+        <!-- Footer Start -->
+        <%- include('../partials/footer') %>
+
+        <!-- End -->
+    </main>
+    <!--End page-content" -->
+</div>
+<!-- page-wrapper -->
+<%
+const caseId = caseItem.id;
+const offenseType = caseItem.offenseType;
+const offense = caseItem.offense;
+%>
+
+<!-- javascript -->
+<%- include('../partials/js-imports') %>
+
+<!-- JAVASCRIPT -->
+
+<script>
+    const userId = localStorage.getItem("userId");
+    let officerId;
+
+    const offenseTitleSelect = document.getElementById('offenseTitleSelect');
+    const offenseTypeSelect = document.getElementById('offenseTypeSelect');
+    const offenseTypeText = '<%= offenseType %>';
+    const offenseText = '<%= offense %>';
+
+    var data;
+    fetchData();
+
+    async function fetchData() {
+        const response = await fetch('/uploads/offenses.json');
+        data = await response.json();
+        populateOffenseTypes(data);
+        console.log(data);
+    }
+
+    function populateOffenseTypes(data) {
+        offenseTypeSelect.innerHTML = '<option selected disabled value="">Choose offense type</option>';
+
+        data.offenseTypes.forEach(offenseType => {
+            const option = document.createElement('option');
+            option.value = offenseType.type;
+            if (offenseType.type == offenseTypeText) {
+                option.selected = true;
+                populateOffenseTitles(offenseType.type, data, true);
+            }
+            option.textContent = offenseType.type;
+            offenseTypeSelect.appendChild(option);
+        });
+
+        // Add an event listener to the offenseTypeSelect dropdown
+        offenseTypeSelect.addEventListener('change', () => {
+            const selectedType = offenseTypeSelect.value;
+            console.log("Changed");
+            populateOffenseTitles(selectedType, data, false);
+        });
+    }
+
+    function populateOffenseTitles(selectedType, data, isInit) {
+        offenseTitleSelect.innerHTML = '<option selected disabled value="">Choose option</option>';
+
+        if (selectedType) {
+            const offenses = data.offenses[selectedType];
+
+            if (offenses) {
+                offenses.forEach(offense => {
+                    const option = document.createElement('option');
+                    option.value = offense.title;
+                    option.textContent = offense.title;
+                    offenseTitleSelect.appendChild(option);
+                    if (isInit) {
+                        if (offense.title == offenseText) {
+                            option.selected = true;
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    fetch(`/api/officers/user/${userId}`, {
+        method: 'GET',
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            officerId = data.data.id;
+            console.log("Officer data:", data);
+        })
+        .catch(error => {
+            // Handle errors here
+            console.error("Error fetching case:", error);
+        });
+
+
+    function confirm(event) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This case will be updated',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                submitForm(event);
+            }
+        });
+    }
+
+    function submitForm(event) {
+        document.getElementById('loading-overlay').style.display = 'flex';
+
+        const formData = new FormData(event.target);
+        formData.append('officerId', officerId);
+        const caseId = '<%= caseId %>';
+
+        fetch(`/api/cases/${caseId}`, {
+            method: 'PUT',
+            body: formData,
+        }).then(response => response.json())
+            .then(data => {
+                // Handle the response data as needed
+                console.log(data);
+                document.getElementById('loading-overlay').style.display = 'none';
+                if (data.status === 200) {
+                    localStorage.setItem('hasNotification', "true");
+                    localStorage.setItem('notification', "Case Updated Successfully");
+                    localStorage.setItem('notificationType', "success");
+                    window.location.href = '/cases/all'; // Adjust the URL accordingly
+                } else if (data.status > 399) {
+                    toastr.error(data.message);
+                }
+            }).catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+            document.getElementById('loading-overlay').style.display = 'none';
+        });
+
+    }
+
+    document.getElementById('caseForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        confirm(event);
+    });
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    // Apply Select2 to the party select dropdown
+    $(document).ready(function () {
+        $('#partySelect').select2({
+            placeholder: 'Search for a party',
+            allowClear: true,
+            minimumInputLength: 0,
+        });
+    });
+</script>
+</body>
+
+</html>
